@@ -1,0 +1,6 @@
+variables:
+  VERSION: ${CI_COMMIT_TAG:-$(git describe --tags --long --abbrev=8 --match="[0-9]*" | sed 's/-\([0-9]\+\)-g\([a-f0-9]\{8\}\)$/.\2/' || echo "0.0.0.${CI_COMMIT_SHA:0:8}")}
+
+build:
+  before_script: [git fetch --tags --unshallow 2>/dev/null || true]
+  script: [docker build -t "myapp:$VERSION" .]
